@@ -2,6 +2,12 @@ import time, datetime, dateutil
 import win32com.client
 import util.time
 
+from enum import Enum
+
+class FETCH_MODE(Enum):
+    ALL_MINUTES = 1
+    FIRST_RECORD = 2
+
 DATE_FORMAT = "%Y-%m-%d"
 
 class Fetcher():
@@ -9,7 +15,7 @@ class Fetcher():
         self.objStockChart = win32com.client.Dispatch("CpSysDib.StockChart")      
         self.objCpCybos = win32com.client.Dispatch("CpUtil.CpCybos")
 
-    def _set_input_value(self, code, date):
+    def _set_input_value(self, code, date, fetch_mode):
         '''
         set input value to prepare a call.
 
@@ -18,7 +24,12 @@ class Fetcher():
         :return:
         '''
         self.objStockChart.SetInputValue(0, 'A' + code)
-        self.objStockChart.SetInputValue(1, ord('1'))  # 요청 구분 '1': 기간, '2': 개수
+        if fetch_mode is FETCH_MODE.ALL_MINUTES:
+            self.objStockChart.SetInputValue(1, ord('1'))  # 요청 구분 '1': 기간, '2': 개수
+        elif fetch_mode is FETCH_MODE.FIRST_RECORD:
+            self.objStockChart.SetInputValue(1, ord('2'))  # 요청 구분 '1': 기간, '2': 개수
+            self.objStockChart.SetInputValue(4, 1) # 요청 개수
+
         self.objStockChart.SetInputValue(2, date)
         self.objStockChart.SetInputValue(3, date)
         self.objStockChart.SetInputValue(5, [0, 1, 2, 3, 4, 5, 8])  # 요청항목 - 날짜, 시간,시가,고가,저가,종가,거래량
@@ -57,24 +68,24 @@ class Fetcher():
             time.sleep(1)
         
         return True
-        
-    def fetch_by_minute(self, code, date):
+
+    def _fetch_by_mode(self, code, date, fetch_mode):
         '''
         fetch by minute
 
         :param code: stock code
         :param date: example 20190920
-        :return:
+        :return: rows
         '''
         self._throttle(code)
-        
-        self._set_input_value(code, date)
+
+        self._set_input_value(code, date, fetch_mode)
         self.objStockChart.BlockRequest()
 
         res = []
         if not self._check_request_status():
             return res
-        
+
         count_received = self.objStockChart.GetHeaderValue(3)
         if not count_received:
             print('count_received for {code} is zero, likely there was no trading for the code'.format(code=code))
@@ -103,6 +114,26 @@ class Fetcher():
             res.append(row)
 
         return res[::-1]
+
+    def fetch_by_minute(self, code, date):
+        '''
+        fetch by minute
+
+        :param code: stock code
+        :param date: example 20190920
+        :return: rows
+        '''
+        return self._fetch_by_mode(code, date, FETCH_MODE.ALL_MINUTES)
+
+    def fetch_first(self, code, date):
+        '''
+        fetch by minute
+
+        :param code: stock code
+        :param date: example 20190920
+        :return: rows
+        '''
+        return self._fetch_by_mode(code, date, FETCH_MODE.FIRST_RECORD)
 
 if __name__ == '__main__':
     fetcher = Fetcher()
