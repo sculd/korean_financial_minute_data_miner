@@ -26,8 +26,12 @@ def ingest(date_v, rows_by_code, data_type):
         if not rows:
             continue
 
+        # last column should be symbol
         for row in rows:
             row.append(code)
+
+        if data_type == util.dir.DATA_TYPE.RAW_FIRST_MINUTE:
+            rows = rows[:1]
 
         with open(os.path.join(dir, '{code}.csv'.format(code=code)), 'w') as outfile:
             outfile.write(','.join(column_names) + '\n')
@@ -41,12 +45,14 @@ def ingest(date_v, rows_by_code, data_type):
             for row in rows:
                 t = datetime.datetime.strptime(row[1], DATETIME_FORMAT)
                 # fill in the empty (no trade happening) time buckets
-                while True:
-                    prev_t  = datetime.datetime.strptime(prev_row[1], DATETIME_FORMAT)
-                    if prev_t + dt_minute >= t:
-                        break
-                    prev_row[1] = (prev_t + dt_minute).strftime(DATETIME_FORMAT)
-                    prev_row[-2] = 0 # zero volume
-                    outfile.write(','.join(map(lambda v: str(v), prev_row))+'\n')
+                if data_type != util.dir.DATA_TYPE.RAW_FIRST_MINUTE:
+                    while True:
+                        prev_t  = datetime.datetime.strptime(prev_row[1], DATETIME_FORMAT)
+                        if prev_t + dt_minute >= t:
+                            break
+                        prev_row[1] = (prev_t + dt_minute).strftime(DATETIME_FORMAT)
+                        prev_row[-2] = 0 # zero volume
+                        outfile.write(','.join(map(lambda v: str(v), prev_row))+'\n')
+
                 outfile.write(','.join(map(lambda v: str(v), row))+'\n')
                 prev_row = row
