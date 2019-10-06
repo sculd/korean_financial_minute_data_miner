@@ -57,5 +57,6 @@ def combine_for_date(date_str, data_type):
         return pd.DataFrame()
     base_dir = util.dir.get_base_dir(data_type)
     df = _combine_all_in(os.path.join(base_dir, date_str, latest))
+
     df.to_csv(os.path.join(base_dir, date_str, 'combined') + '.csv')
     return df

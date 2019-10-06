@@ -3,7 +3,7 @@ import util.time
 from util.time import DATETIME_FORMAT, KOREA_TIME_ZONE
 import util.dir
 
-def ingest(date_v, rows_by_code):
+def ingest(date_v, rows_by_code, data_type):
     '''
     given the rows by code, write them into csv.
 
@@ -11,7 +11,9 @@ def ingest(date_v, rows_by_code):
     :return:
     '''
     date_str = util.time.get_date_str(date_v)
-    base_dir = util.dir.get_base_dir(util.dir.DATA_TYPE.RAW)
+    base_dir = util.dir.get_base_dir(data_type)
+    if not os.path.exists(base_dir):
+        os.mkdir(base_dir)
     dir = os.path.join(base_dir, date_str)
     if not os.path.exists(dir):
         os.mkdir(dir)

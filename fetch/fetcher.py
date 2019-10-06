@@ -24,12 +24,7 @@ class Fetcher():
         :return:
         '''
         self.objStockChart.SetInputValue(0, 'A' + code)
-        if fetch_mode is FETCH_MODE.ALL_MINUTES:
-            self.objStockChart.SetInputValue(1, ord('1'))  # 요청 구분 '1': 기간, '2': 개수
-        elif fetch_mode is FETCH_MODE.FIRST_RECORD:
-            self.objStockChart.SetInputValue(1, ord('2'))  # 요청 구분 '1': 기간, '2': 개수
-            self.objStockChart.SetInputValue(4, 1) # 요청 개수
-
+        self.objStockChart.SetInputValue(1, ord('1'))  # 요청 구분 '1': 기간, '2': 개수
         self.objStockChart.SetInputValue(2, date)
         self.objStockChart.SetInputValue(3, date)
         self.objStockChart.SetInputValue(5, [0, 1, 2, 3, 4, 5, 8])  # 요청항목 - 날짜, 시간,시가,고가,저가,종가,거래량
@@ -75,7 +70,7 @@ class Fetcher():
 
         :param code: stock code
         :param date: example 20190920
-        :return: rows
+        :return: rows early to later
         '''
         self._throttle(code)
 
@@ -113,6 +108,12 @@ class Fetcher():
             row.append(self.objStockChart.GetDataValue(6, r))
             res.append(row)
 
+        # res so far is later to earlier
+        if fetch_mode is FETCH_MODE.ALL_MINUTES:
+            return res[::-1]
+        elif fetch_mode is FETCH_MODE.FIRST_RECORD:
+            return res[-1:]
+
         return res[::-1]
 
     def fetch_by_minute(self, code, date):
@@ -125,7 +126,7 @@ class Fetcher():
         '''
         return self._fetch_by_mode(code, date, FETCH_MODE.ALL_MINUTES)
 
-    def fetch_first(self, code, date):
+    def fetch_first_minute(self, code, date):
         '''
         fetch by minute
 
