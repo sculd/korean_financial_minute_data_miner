@@ -25,6 +25,15 @@ class ALLFetcher():
         return self.fetch_by_minute(date_v, small_sample=small_sample)
 
     def fetch_first_minute(self, date_v, small_sample = False):
+        '''
+        fetch the first entry for the given date
+
+        The first entry is when the first trade is filled.
+
+        :param date_v:
+        :param small_sample:
+        :return:
+        '''
         res = {}
         codes_set = sorted(list(self.codes_set))[:100] if small_sample else self.codes_set
         print(codes_set)
