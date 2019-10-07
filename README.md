@@ -3,4 +3,4 @@
 execution order
 * fetch
 * ingest
-
+* combine
