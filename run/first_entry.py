@@ -23,7 +23,7 @@ def _save_first_entries_df(date_v):
     # combine and get df
     combine.combine.combine_for_date(util.time.get_date_str(date_v), util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
 
-def _get_first_entries_df(date_v, force_ingest):
+def get_first_entries_df(date_v, force_ingest):
     '''
     Get dataframe of first entries.
 
@@ -51,4 +51,4 @@ def get_first_entries_df_today(force_ingest=False):
     '''
 
     date_v = util.time.get_date_v_now()
-    return _get_first_entries_df(date_v, force_ingest=force_ingest)
+    return get_first_entries_df(date_v, force_ingest=force_ingest)

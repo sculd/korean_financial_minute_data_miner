@@ -1,5 +1,4 @@
 import time, datetime, dateutil
-import win32com.client
 import util.time
 
 from enum import Enum
@@ -12,6 +11,7 @@ DATE_FORMAT = "%Y-%m-%d"
 
 class Fetcher():
     def __init__(self):
+        import win32com.client
         self.objStockChart = win32com.client.Dispatch("CpSysDib.StockChart")      
         self.objCpCybos = win32com.client.Dispatch("CpUtil.CpCybos")
 
