@@ -1,14 +1,14 @@
 import os, datetime
 import korean_financial_minute_data_miner.fetch.fetcher
-from korean_financial_minute_data_miner import fetch
-import combine.combine
+import korean_financial_minute_data_miner.fetch.all_fetcher
+from korean_financial_minute_data_miner.combine import combine
 import korean_financial_minute_data_miner.util.dir
 import korean_financial_minute_data_miner.util.time
 import pandas as pd
 
 def _save_first_entries_df(date_v):
     # fetch
-    all_fetcher = fetch.all_fetcher.ALLFetcher()
+    all_fetcher = korean_financial_minute_data_miner.fetch.all_fetcher.ALLFetcher()
     t_start = datetime.datetime.now()
     rows_by_code = all_fetcher.fetch_first_minute(date_v)
     t_after = datetime.datetime.now()
@@ -21,7 +21,7 @@ def _save_first_entries_df(date_v):
     korean_financial_minute_data_miner.ingest.ingest.ingest(date_v, rows_by_code, korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
 
     # combine and get df
-    combine.combine.combine_for_date(korean_financial_minute_data_miner.util.time.get_date_str(date_v), korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
+    korean_financial_minute_data_miner.combine.combine.combine_for_date(korean_financial_minute_data_miner.util.time.get_date_str(date_v), korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
 
 def get_first_entries_df(date_v, force_ingest):
     '''

@@ -1,5 +1,5 @@
 import datetime
-from korean_financial_minute_data_miner.fetch import Fetcher
+from korean_financial_minute_data_miner.fetch.fetcher import Fetcher
 from korean_financial_minute_data_miner.util.time import KOREA_TIME_ZONE
 from korean_financial_minute_data_miner.util import company_codes
 
