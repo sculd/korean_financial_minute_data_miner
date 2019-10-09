@@ -35,6 +35,9 @@ def get_first_entries_df(date_v, force_ingest):
     '''
     base_dir = korean_financial_minute_data_miner.util.dir.get_base_dir(
         korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
+    if not os.path.exists(base_dir):
+        os.mkdir(base_dir)
+
     date_str = korean_financial_minute_data_miner.util.time.get_date_str(date_v)
     filename_combined = os.path.join(base_dir, date_str, 'combined') + '.csv'
 
