@@ -1,7 +1,7 @@
 import datetime, os, copy
-import util.time
-from util.time import DATETIME_FORMAT, KOREA_TIME_ZONE
-import util.dir
+import korean_financial_minute_data_miner.util.time
+from korean_financial_minute_data_miner.util.time import DATETIME_FORMAT, KOREA_TIME_ZONE
+import korean_financial_minute_data_miner.util.dir
 
 def ingest(date_v, rows_by_code, data_type):
     '''
@@ -10,8 +10,8 @@ def ingest(date_v, rows_by_code, data_type):
     :param rows_by_code: map of rows keyed by code
     :return:
     '''
-    date_str = util.time.get_date_str(date_v)
-    base_dir = util.dir.get_base_dir(data_type)
+    date_str = korean_financial_minute_data_miner.util.time.get_date_str(date_v)
+    base_dir = korean_financial_minute_data_miner.util.dir.get_base_dir(data_type)
     if not os.path.exists(base_dir):
         os.mkdir(base_dir)
     dir = os.path.join(base_dir, date_str)
@@ -30,7 +30,7 @@ def ingest(date_v, rows_by_code, data_type):
         for row in rows:
             row.append(code)
 
-        if data_type == util.dir.DATA_TYPE.RAW_FIRST_MINUTE:
+        if data_type == korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE:
             rows = rows[:1]
 
         with open(os.path.join(dir, '{code}.csv'.format(code=code)), 'w') as outfile:
@@ -45,7 +45,7 @@ def ingest(date_v, rows_by_code, data_type):
             for row in rows:
                 t = datetime.datetime.strptime(row[1], DATETIME_FORMAT)
                 # fill in the empty (no trade happening) time buckets
-                if data_type != util.dir.DATA_TYPE.RAW_FIRST_MINUTE:
+                if data_type != korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE:
                     while True:
                         prev_t  = datetime.datetime.strptime(prev_row[1], DATETIME_FORMAT)
                         if prev_t + dt_minute >= t:

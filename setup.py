@@ -6,6 +6,6 @@ setup(
    description='A module to mine minute-level data',
    author='Hyungjun Lim',
    author_email='sculd3@gmail.com',
-   packages=find_packages(include=['ingest', 'fetch', 'util']),
+   packages=find_packages(include=['korean_financial_minute_data_miner', 'korean_financial_minute_data_miner.ingest', 'korean_financial_minute_data_miner.fetch', 'korean_financial_minute_data_minerutil', 'korean_financial_minute_data_miner.run']),
    install_requires=['pandas'],
 )

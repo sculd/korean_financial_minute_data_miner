@@ -1,9 +1,9 @@
 import os, datetime
-import fetch.fetcher, fetch.all_fetcher
-import ingest.ingest
+import korean_financial_minute_data_miner.fetch.fetcher
+from korean_financial_minute_data_miner import fetch
 import combine.combine
-import util.dir
-import util.time
+import korean_financial_minute_data_miner.util.dir
+import korean_financial_minute_data_miner.util.time
 import pandas as pd
 
 def _save_first_entries_df(date_v):
@@ -18,10 +18,10 @@ def _save_first_entries_df(date_v):
     print('%d seconds took to fetch one day data for entire %d symbols ' % (dt.total_seconds(), len(rows_by_code)))
 
     # ingest into csv files
-    ingest.ingest.ingest(date_v, rows_by_code, util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
+    korean_financial_minute_data_miner.ingest.ingest.ingest(date_v, rows_by_code, korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
 
     # combine and get df
-    combine.combine.combine_for_date(util.time.get_date_str(date_v), util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
+    combine.combine.combine_for_date(korean_financial_minute_data_miner.util.time.get_date_str(date_v), korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
 
 def get_first_entries_df(date_v, force_ingest):
     '''
@@ -33,8 +33,9 @@ def get_first_entries_df(date_v, force_ingest):
     :param force_ingest:
     :return:
     '''
-    base_dir = util.dir.get_base_dir(util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
-    date_str = util.time.get_date_str(date_v)
+    base_dir = korean_financial_minute_data_miner.util.dir.get_base_dir(
+        korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
+    date_str = korean_financial_minute_data_miner.util.time.get_date_str(date_v)
     filename_combined = os.path.join(base_dir, date_str, 'combined') + '.csv'
 
     if not os.path.exists(filename_combined) or force_ingest:
@@ -50,5 +51,5 @@ def get_first_entries_df_today(force_ingest=False):
     :return:
     '''
 
-    date_v = util.time.get_date_v_now()
+    date_v = korean_financial_minute_data_miner.util.time.get_date_v_now()
     return get_first_entries_df(date_v, force_ingest=force_ingest)

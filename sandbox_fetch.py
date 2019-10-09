@@ -1,4 +1,4 @@
-import fetch.fetcher, fetch.all_fetcher
+from korean_financial_minute_data_miner import fetch
 import pickle, datetime
 
 all_fetcher = fetch.all_fetcher.ALLFetcher()

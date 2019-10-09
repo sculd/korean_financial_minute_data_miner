@@ -1,5 +1,5 @@
 import os, datetime, dateutil.tz
-import util.dir
+import korean_financial_minute_data_miner.util.dir
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
 KOREA_TIME_ZONE = dateutil.tz.tzoffset('KR', datetime.timedelta(hours=9))
@@ -42,7 +42,7 @@ def get_latest_time_v(date_str, data_type):
     :return: latest time_v (int)
     '''
     latest = '0'
-    base_dir = util.dir.get_base_dir(data_type)
+    base_dir = korean_financial_minute_data_miner.util.dir.get_base_dir(data_type)
 
     for time_str in os.listdir(os.path.join(base_dir, date_str)):
         if not os.path.isdir(os.path.join(base_dir, date_str, time_str)): continue

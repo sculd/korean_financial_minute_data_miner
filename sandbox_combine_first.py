@@ -1,9 +1,9 @@
 import combine.combine
-import util.dir
+import korean_financial_minute_data_miner.util.dir
 
 
 def run():
-    df = combine.combine.combine_for_date('2019-09-19', util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
+    df = combine.combine.combine_for_date('2019-09-19', korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)
     print(df.head())
     print(df.tail())
     print('All done')

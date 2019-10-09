@@ -1,5 +1,5 @@
-import time, datetime, dateutil
-import util.time
+import time, datetime
+import korean_financial_minute_data_miner.util.time
 
 from enum import Enum
 
@@ -100,7 +100,7 @@ class Fetcher():
             date_v = self.objStockChart.GetDataValue(0, r)
             time_v = self.objStockChart.GetDataValue(1, r)
             row.append(get_date(date_v))
-            row.append(util.time.get_datetime(date_v, time_v))
+            row.append(korean_financial_minute_data_miner.util.time.get_datetime(date_v, time_v))
             row.append(self.objStockChart.GetDataValue(2, r))
             row.append(self.objStockChart.GetDataValue(3, r))
             row.append(self.objStockChart.GetDataValue(4, r))
