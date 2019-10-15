@@ -1,6 +1,7 @@
 import os, datetime
 import korean_financial_minute_data_miner.fetch.fetcher
 import korean_financial_minute_data_miner.fetch.all_fetcher
+import korean_financial_minute_data_miner.ingest.ingest
 from korean_financial_minute_data_miner.combine import combine
 import korean_financial_minute_data_miner.util.dir
 import korean_financial_minute_data_miner.util.time
