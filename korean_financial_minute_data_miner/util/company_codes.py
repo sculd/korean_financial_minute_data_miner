@@ -2,7 +2,7 @@ import os, pickle
 import pandas as pd
 
 _URL_FETCH_CODES = 'http://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13'
-_FILENAME_SAVED = 'util/company_codes.pickle'
+_FILENAME_SAVED = 'company_codes.pickle'
 _codes = {}
 
 def _fetch_codes_pickle():

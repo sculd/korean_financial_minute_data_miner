@@ -2,7 +2,7 @@ import datetime
 from korean_financial_minute_data_miner.fetch.fetcher import Fetcher
 from korean_financial_minute_data_miner.util.time import KOREA_TIME_ZONE
 from korean_financial_minute_data_miner.util import company_codes
-
+import korean_financial_minute_data_miner.util.logging as logging
 
 class ALLFetcher():
     def __init__(self):
@@ -36,9 +36,12 @@ class ALLFetcher():
         '''
         res = {}
         codes_set = sorted(list(self.codes_set))[:100] if small_sample else self.codes_set
-        print(codes_set)
+        logging.info('there are {l} codes to fetch'.format(l=len(codes_set)))
         for code in codes_set:
             rows = self.fetcher.fetch_first_minute(code, date_v)
+            if len(rows) == 0:
+                logging.info('there are zero rows for {code}, total non-empty rows so far {l}'.format(code=code, l=len(res)))
+                continue
             res[code] = rows
         return res
 

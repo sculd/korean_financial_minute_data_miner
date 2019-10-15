@@ -32,7 +32,7 @@ def get_first_entries_df(date_v, force_ingest):
 
     :param date_v:
     :param force_ingest:
-    :return:
+    :return: pandas.Dataframe
     '''
     base_dir = korean_financial_minute_data_miner.util.dir.get_base_dir(
         korean_financial_minute_data_miner.util.dir.DATA_TYPE.RAW_FIRST_MINUTE)

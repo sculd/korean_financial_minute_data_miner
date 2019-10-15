@@ -70,6 +70,7 @@ class Fetcher():
 
         :param code: stock code
         :param date: example 20190920
+        :param fetch_mode: all minutes or first record
         :return: rows early to later
         '''
         self._throttle(code)

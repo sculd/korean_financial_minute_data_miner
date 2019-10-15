@@ -1,8 +1,40 @@
 import os, datetime, dateutil.tz
+import pytz
 import korean_financial_minute_data_miner.util.dir
+from pytz import timezone
+
 
 DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S%z"
-KOREA_TIME_ZONE = dateutil.tz.tzoffset('KR', datetime.timedelta(hours=9))
+KOREA_TIME_ZONE = timezone("Asia/Seoul")
+
+
+def get_utcnow():
+    tz_utc = pytz.utc
+    return tz_utc.localize(datetime.datetime.utcnow())
+
+def get_today_str_tz():
+    return str(get_utcnow().astimezone(KOREA_TIME_ZONE).date())
+
+def get_now_tz():
+    '''
+    get datetime.time of now in korean time zone.
+    :return:
+    '''
+    now_tz = get_utcnow().astimezone(KOREA_TIME_ZONE)
+    return datetime.time(now_tz.hour, now_tz.minute, now_tz.second, tzinfo=KOREA_TIME_ZONE)
+
+def time_diff_seconds(t1, t2):
+    '''
+    Get datetime.timedelta between two datetime.time
+
+    :param t1:
+    :param t2:
+    :return:
+    '''
+    today = datetime.date.today()
+    dt1, dt2 = datetime.datetime.combine(today, t1), datetime.datetime.combine(today, t2)
+    tf = dt1 - dt2
+    return tf.days * 24 * 3600 + tf.seconds
 
 def get_date_str(date_v):
     '''
@@ -32,7 +64,7 @@ def get_date_v_now():
     :return: 2019-09-19 -> 20190919
     '''
     t = datetime.datetime.now().astimezone(KOREA_TIME_ZONE)
-    return t.strftime("%Y%m%d")
+    return int(t.strftime("%Y%m%d"))
 
 def get_latest_time_v(date_str, data_type):
     '''
